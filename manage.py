@@ -1,5 +1,5 @@
 from getpass import getpass
-import sys, hashlib
+import sys, base64
 
 if sys.version_info.major != 3:
     if sys.version_info.major == 2:
@@ -13,7 +13,7 @@ if sys.argv[1] == 'init':
     botPassword = getpass("Bot Password: ")
     targReddit = input("Target subreddit (where the bot will be active in): ")
     confFile = open('.conf', 'w')
-    confFile.write(botUsername.lower()+'\n'+hashlib.sha224(bytes(botPassword, "ascii")).hexdigest()+'\n'+targReddit.lower())
+    confFile.write(botUsername.lower()+'\n'+str(base64.b64encode(bytes(botPassword, "ascii")))+'\n'+targReddit.lower())
     confFile.close()
 elif sys.argv[1] == 'run':
     try:
@@ -23,7 +23,7 @@ elif sys.argv[1] == 'run':
         sys.exit()
     lines = confFile.read().split('\n')
     botUsername = lines[0]
-    botPassword = lines[1]
+    botPassword = str(base64.b64.decode(lines[1]))
     targReddit = lines[2]
     confFile.close()
     print(botSecret)
