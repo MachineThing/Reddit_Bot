@@ -11,8 +11,9 @@ if sys.version_info.major != 3:
 if sys.argv[1] == 'init':
     botUsername = input("Bot Username: ")
     botPassword = getpass("Bot Password: ")
+    targReddit = input("Target subreddit (where the bot will be active in): ")
     confFile = open('.conf', 'w')
-    confFile.write(botUsername.lower()+'\n'+hashlib.sha224(bytes(botPassword, "ascii")).hexdigest())
+    confFile.write(botUsername.lower()+'\n'+hashlib.sha224(bytes(botPassword, "ascii")).hexdigest()+'\n'+targReddit.lower())
     confFile.close()
 elif sys.argv[1] == 'run':
     try:
@@ -23,5 +24,6 @@ elif sys.argv[1] == 'run':
     lines = confFile.read().split('\n')
     botUsername = lines[0]
     botPassword = lines[1]
+    targReddit = lines[2]
     confFile.close()
     print(botSecret)
