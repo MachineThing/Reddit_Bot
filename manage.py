@@ -13,7 +13,7 @@ if sys.argv[1] == 'init':
     botPassword = getpass("Bot Password: ")
     targReddit = input("Target subreddit (where the bot will be active in): ")
     confFile = open('.conf', 'w')
-    confFile.write(botUsername.lower()+'\n'+str(base64.b64encode(bytes(botPassword, "ascii")))+'\n'+targReddit.lower())
+    confFile.write(botUsername.lower()+'\n'+str(base64.b64encode(bytes(botPassword, "ascii")))[2:-1]+'\n'+targReddit.lower())
     confFile.close()
 elif sys.argv[1] == 'run':
     try:
@@ -23,7 +23,7 @@ elif sys.argv[1] == 'run':
         sys.exit()
     lines = confFile.read().split('\n')
     botUsername = lines[0]
-    botPassword = str(base64.b64.decode(lines[1]))
+    botPassword = str(base64.b64decode(lines[1]))[2:-1]
     targReddit = lines[2]
     confFile.close()
-    print(botSecret)
+    print(botPassword)
