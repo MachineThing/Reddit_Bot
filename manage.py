@@ -25,10 +25,14 @@ elif sys.argv[1] == 'run':
         sys.exit()
     lines = confFile.read().split('\n')
     botUsername = lines[0]
-    botPassword = str(base64.b64decode(lines[1]))[2:-1]
+    botPassword = str(base64.b64decode(lines[1]))
     targReddit = lines[2]
     botClient = lines[3]
-    botSecret = botPassword = str(base64.b64decode(lines[4]))[2:-1]
+    botSecret = botPassword = str(base64.b64decode(lines[4]))
     confFile.close()
 
-    print(bot.make_bot(botUsername, botPassword, botClient, botSecret))
+    rBot = bot.make_bot(botUsername, botPassword, botClient, botSecret, targReddit)
+    print(rBot['bot'].user.me())
+    #posts = rBot['subreddit'].hot(limit=5)
+    #for submission in posts:
+    #    print(submission.title)
