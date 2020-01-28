@@ -31,4 +31,4 @@ elif sys.argv[1] == 'run':
     botSecret = botPassword = str(base64.b64decode(lines[4]))[2:-1]
     confFile.close()
 
-    bot.info()
+    print(bot.make_bot(botUsername, botPassword, botClient, botSecret))
