@@ -1,2 +1,5 @@
 # Configuration file
 .conf
+
+# Cache
+*__pycache__/

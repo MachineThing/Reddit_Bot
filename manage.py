@@ -1,4 +1,4 @@
-import sys, base64, praw
+import sys, base64, bot
 
 if sys.version_info.major != 3:
     if sys.version_info.major == 2:
@@ -30,3 +30,5 @@ elif sys.argv[1] == 'run':
     botClient = lines[3]
     botSecret = botPassword = str(base64.b64decode(lines[4]))[2:-1]
     confFile.close()
+
+    bot.info()
