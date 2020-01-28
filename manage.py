@@ -1,4 +1,4 @@
-import sys, base64, bot
+import os, sys, base64, bot, sqlite3
 
 if sys.version_info.major != 3:
     if sys.version_info.major == 2:
@@ -31,7 +31,29 @@ elif sys.argv[1] == 'run':
     botSecret = str(base64.b64decode(lines[4]))[2:-1]
     confFile.close()
 
+    if os.path.isfile('db.sqlite3') == False:
+        print("Database does not exist... Making database!")
+        database = sqlite3.connect('db.sqlite3')
+        database.execute('CREATE TABLE comments (ID varchar(16));')
+    else:
+        database = sqlite3.connect('db.sqlite3')
+
     rBot = bot.make_bot(botUsername, botPassword, botClient, botSecret, targReddit)
 
-    for comment in rBot['subreddit'].stream.comments():
-        bot.reply_comment(comment)
+    try:
+        for comment in rBot['subreddit'].stream.comments():
+            comment_exists = False
+            comment_list = database.execute('SELECT * FROM comments;')
+            for comment_id in comment_list:
+                if comment.id == comment_id[0]:
+                    comment_exists = True
+            if not comment_exists:
+                print("Got new comment: "+comment.id)
+                bot.reply_comment(comment)
+                database.execute('INSERT INTO comments (ID) VALUES (\''+comment.id+'\');')
+                database.commit()
+    except KeyboardInterrupt:
+        pass
+
+    print("Quitting...")
+    database.close()
