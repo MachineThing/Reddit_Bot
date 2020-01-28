@@ -33,6 +33,5 @@ elif sys.argv[1] == 'run':
 
     rBot = bot.make_bot(botUsername, botPassword, botClient, botSecret, targReddit)
 
-    posts = rBot['subreddit'].hot(limit=5)
-    for submission in posts:
-        print(submission.title)
+    for comment in rBot['subreddit'].stream.comments():
+        bot.reply_comment(comment)
